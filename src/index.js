@@ -51,6 +51,15 @@ app.put('/talker/:id', checkAuthentication, checkName, checkAge, checkTalk, (req
     res.status(200).json(upInfo);
   });
 
+  app.delete('/talker/:id', checkAuthentication, (req, res) => {
+  const checkID = Number(req.params.id);
+  const checkTalkers = JSON.parse(fs.readFileSync(pathTalker));
+  const target = checkTalkers.filter((e) => e.id !== checkID);
+
+  fs.writeFileSync(pathTalker, JSON.stringify(target));
+  res.status(204).json();
+});
+
 // Ajuda monitoria crypto //
 
 const HTTP_OK_STATUS = 200;
