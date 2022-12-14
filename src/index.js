@@ -1,6 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const crypto = require('crypto');
+const login = require('../middlewares/login');
 
 const app = express();
 app.use(express.json());
@@ -18,12 +19,12 @@ app.get('/talker/:id', async (req, res) => {
   return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
 });
 
-app.post('/login', (_req, res) => {
+app.post('/login', login.checkLogin, (_req, res) => {
   const tokenLogin = () => crypto.randomBytes(8).toString('hex');
   res.status(200).json({ token: tokenLogin() });
 });
 
-// Ajuda monitoria //
+// Ajuda monitoria crypto //
 
 const HTTP_OK_STATUS = 200;
 const PORT = '3000';
