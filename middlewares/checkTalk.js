@@ -14,7 +14,7 @@ function checkWatchedAt(req, res) {
     const numbers = [1, 2, 3, 4, 5];
     const { talk } = req.body;
 
-    if (!talk.rate) {
+    if (talk.rate === undefined) { // ?? //
       return res.status(400).json({ message: 'O campo "rate" é obrigatório' });
     }
     if (!(numbers.includes(talk.rate))) {
@@ -24,7 +24,7 @@ function checkWatchedAt(req, res) {
 
   function checkTalk(req, res, next) {
     const { talk } = req.body;
-    
+
    if (!talk) return res.status(400).json({ message: 'O campo "talk" é obrigatório' });
     checkWatchedAt(req, res);
     checkRate(req, res);
@@ -34,3 +34,5 @@ function checkWatchedAt(req, res) {
   module.exports = { 
     checkTalk,
 };
+
+// Ajuda mentoria !rate to rate === undefinded //

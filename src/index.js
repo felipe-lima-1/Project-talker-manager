@@ -30,15 +30,25 @@ app.post('/login', login.checkLogin, (_req, res) => {
   res.status(200).json({ token: tokenLogin() });
 });
 
-app.post('/talker',
-  checkAuthentication, checkName, checkAge, checkTalk,
-  (req, res) => {
+app.post('/talker', checkAuthentication, checkName, checkAge, checkTalk, (req, res) => {
     const { name, age, talk } = req.body;
     const talkers = JSON.parse(fs.readFileSync(pathTalker));
     const addTalk = { id: talkers.length + 1, name, age, talk };
+
     talkers.push(addTalk);
     fs.writeFileSync(pathTalker, JSON.stringify(talkers));
     res.status(201).json(addTalk);
+  });
+
+app.put('/talker/:id', checkAuthentication, checkName, checkAge, checkTalk, (req, res) => {
+    const checkId = Number(req.params.id);
+    const checkTalkers = JSON.parse(fs.readFileSync(pathTalker));
+    const upInfo = { id: checkId, ...req.body };
+
+    checkTalkers.filter((event) => event.id !== checkId);
+    checkTalkers.push(upInfo);
+    fs.writeFileSync(pathTalker, JSON.stringify(checkTalkers));
+    res.status(200).json(upInfo);
   });
 
 // Ajuda monitoria crypto //
